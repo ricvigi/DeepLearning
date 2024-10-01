@@ -52,20 +52,3 @@ class Max(torch.autograd.Function):
         grad_x = grad_z * (x >= y).float()
         grad_y = grad_z * (y > x).float()
         return grad_x, grad_y
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
