@@ -1,5 +1,6 @@
 import torch
-
+import math
+import numpy as np
 
 def train_val_test_split(data):
     n_samples = len(data)
@@ -26,3 +27,10 @@ def train_val_test_split(data):
 def is_full_rank(X:torch.tensor) -> bool:
     '''A matrix X is full rank if no column feature is linearly independent on the others.'''
     return X.shape[1] == torch.linalg.matrix_rank(X)
+def normal(x, mu, sigma):
+    p = 1 / math.sqrt(2 * math.pi * sigma**2)
+    return p * np.exp(-0.5 * (x - mu)**2 / sigma**2)
+
+
+
+
