@@ -3,4 +3,6 @@ dlenv/
 info.txt
 *.pdf
 books/
-
+*.csv
+py/__pycache__
+datasets/
