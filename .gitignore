@@ -5,4 +5,5 @@ info.txt
 books/
 *.csv
 py/__pycache__
+py/linear_neural_networks/__pycache__
 datasets/
