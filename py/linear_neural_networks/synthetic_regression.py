@@ -26,5 +26,4 @@ class SyntheticRegressionData(DataModule): #@save
 if __name__=="__main__":
     data = SyntheticRegressionData(w=torch.tensor([-2, -3.4]),
                                    b=4.2)
-    X, y = next(iter(data.train_dataloader()))
 
