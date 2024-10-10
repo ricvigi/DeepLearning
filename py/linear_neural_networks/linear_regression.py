@@ -10,6 +10,7 @@ class LinearRegressionScratch(utils.Module): #@save
         self.save_hyperparameters()
         self.w = torch.normal(0, sigma,
                               (num_inputs, 1), requires_grad=True)
+
         self.b = torch.zeros(1, requires_grad=True)
     def forward(self, X):
         # Here broadcasting allows us to add a scalar
@@ -36,7 +37,11 @@ class SGD(utils.HyperParameters): #@save
 
 if __name__ == "__main__":
     model = LinearRegressionScratch(2, lr=.03)
+    print(f"weights are {model.w, model.w.shape}")
     data = SyntheticRegressionData(w=torch.tensor([2, -3.4]), b=4.2)
-    trainer = utils.Trainer(max_epochs=3)
+    trainer = utils.Trainer(max_epochs=30)
     trainer.fit(model, data)
     plt.show()
+    with torch.no_grad():
+        print(f"error in estimating w: {data.w - model.w.reshape(data.w.shape)}")
+        print(f"error in estimating b: {data.b - model.b}")
