@@ -14,9 +14,9 @@ def train_val_test_split(data):
     test_indices = shuffled_indices[-n_test:]
     #print(train_indices.shape, val_indices.shape, test_indices.shape, sep="\n")
 
-    train_data = [data[x] for x in train_indices]
-    val_data = [data[x] for x in val_indices]
-    test_data = [data[x] for x in test_indices]
+    train_data = torch.stack([data[x] for x in train_indices])
+    val_data = torch.stack([data[x] for x in val_indices])
+    test_data = torch.stack([data[x] for x in test_indices])
 
     assert len(train_data) == train_indices.shape[0], "[*] ERROR: Something went wrong in splitting data (train data)"
     assert len(val_data) == val_indices.shape[0], "[*] ERROR: Something went wrong in splitting data (val data)"
