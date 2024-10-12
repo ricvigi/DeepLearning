@@ -1,2 +1,2 @@
 # DeepLearningClass
-This repository contains code and other files for the DeepLearning course at ACSAI Sapienze
+This repository contains code and other files for the DeepLearning course at ACSAI Sapienza
