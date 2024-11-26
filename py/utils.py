@@ -1,6 +1,7 @@
 import torch
 import math
 import numpy as np
+from PIL import Image
 
 def train_val_test_split(data):
     n_samples = len(data)
@@ -31,6 +32,16 @@ def normal(x, mu, sigma):
     p = 1 / math.sqrt(2 * math.pi * sigma**2)
     return p * np.exp(-0.5 * (x - mu)**2 / sigma**2)
 
+def show_img(path:str) -> None:
+    img = Image.open(path)
+    path.show()
+
+def show_tensor(t_img:torch.tensor) -> None:
+    if len(t_img.shape > 3):
+        assert t_img.shape[0] <= 1, "You're trying to display a batch of size > 1. Be wary of opening more than one image at a time..."
+    to_img = transforms.ToPILImage()
+    img = to_img(t_img)
+    img.show()
 
 
 
