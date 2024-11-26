@@ -43,5 +43,25 @@ def show_tensor(t_img:torch.tensor) -> None:
     img = to_img(t_img)
     img.show()
 
+def training_loop(n_epochs, optimizer, model, loss_fn,
+                        train_loader) -> None:
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    for epoch in range(1, n_epochs + 1):
+        loss_train = 0.0
+        for imgs, labels in train_loader:
+            imgs = imgs.to(device=device)
+            labels = labels.to(device=device)
+            outputs = model(imgs)
+            loss = loss_fn(outputs, labels)
+
+            optimizer.zero_grad()
+            loss.backward()
+            optimizer.step()
+
+            loss_train += loss.item()
+        if epoch == 1 or epoch % 1 == 0:
+            print(f"{datetime.datetime.now()} Epoch {epoch}, Training loss {loss_train / len(train_loader)}")
+    return
+
 
 
