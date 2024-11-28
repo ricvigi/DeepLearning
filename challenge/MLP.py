@@ -26,7 +26,8 @@ class MLP(nn.Module):
         # fully connected layers
         self.s1 = 4 * 28 * 28
         self.fc1 = nn.Linear(self.s1, 32)
-        self.fc2 = nn.Linear(32, nout)
+        self.fc2 = nn.Linear(32, 16)
+        self.fc3 = nn.Linear(16, nout)
     def init_params(self):
         with torch.no_grad():
             init.xavier_uniform_(self.fc1.weight)
@@ -52,6 +53,8 @@ class MLP(nn.Module):
         out = out.view(out.size(0), -1)
         # print(out.shape)
         out = torch.relu(self.fc1(out))
-        out = self.fc2(out)
+        out = torch.relu(self.fc2(out))
+        out = torch.relu(self.fc3(out))
+        out = F.softmax(out, dim=1)
         return out
 

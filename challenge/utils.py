@@ -46,22 +46,16 @@ def show_tensor(t_img:torch.tensor) -> None:
 
 def validate(model, val_loader) -> str:
     model.eval()
-    for name, loader in [(0, val_loader),
-                         (1, val_loader)]:
-        correct = 0
-        total = 0
+    total = 0
+    correct = 0
+    with torch.no_grad():
+        for imgs, labels in val_loader:
+            outputs = model(imgs)
+            _, predicted = torch.max(outputs, dim=1)
+            total += labels.shape[0]
+            correct += int((predicted == labels).sum())
 
-        with torch.no_grad():
-            for imgs, labels in loader:
-                outputs = model(imgs)
-
-                _, predicted = torch.max(outputs, dim=1)
-                print(predicted[:10], labels[:10])
-                total += labels.shape[0]
-                print((predicted == labels)[:10])
-                correct += int((predicted == labels).sum())
-
-        print("Accuracy {}: {:.2f}".format(name , correct / total))
+    print("Accuracy: {}".format(correct / total))
 
 def training_loop(n_epochs,
                   optimizer,
@@ -84,7 +78,7 @@ def training_loop(n_epochs,
             optimizer.step()
 
             loss_train += loss.item()
-            validate(model, val_loader)
+
         if epoch == 1 or epoch % 1 == 0:
             print(f"{datetime.datetime.now()} Epoch {epoch}, Training loss {loss_train / len(train_loader)}")
 

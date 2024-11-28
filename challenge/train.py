@@ -1,6 +1,6 @@
 import torch
 import torchvision
-# import utils # custom utility funcions
+import os
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
@@ -12,7 +12,7 @@ from utils import training_loop
 from utils import validate
 import datetime
 
-
+gpath = "/home/rick/Ri/ThirdYear/DeepLearning/challenge/"
 path = '/home/rick/Ri/ThirdYear/DeepLearning/challenge/dl2425_challenge_dataset/'
 model_name = "challenge.pt"
 train_path = path + "train"
@@ -25,7 +25,6 @@ transformations = transforms.Compose([
 ])
 train_datafolder = torchvision.datasets.ImageFolder(root=train_path, transform=transformations)
 val_datafolder = torchvision.datasets.ImageFolder(root=val_path, transform=transformations)
-
 
 print(f"validation: {len(val_datafolder.samples)}")
 print(f"training: {len(train_datafolder.samples)}")
@@ -54,7 +53,12 @@ model = MLP()
 numel_list = [p.numel() for p in model.parameters()]
 print("[*] Number of parameters:", sum(numel_list), numel_list)
 
-optimizer = optim.SGD(model.parameters(), lr=.6e-2, weight_decay=1e-3) # NOTE: weight_decay acts like l2 regularization
+if os.path.exists(gpath + model_name):
+    print(f"[*] Resuming training. Loading previous state dict")
+    model.load_state_dict(torch.load(gpath + model_name))
+
+
+optimizer = optim.SGD(model.parameters(), lr=.6e-1, weight_decay=1e-3) # NOTE: weight_decay acts like l2 regularization
 loss_fn = nn.CrossEntropyLoss()
 n_epochs = 60
 
@@ -69,3 +73,5 @@ training_loop(
      val_loader = val_loader
     )
 
+# update the model's state dictionary
+torch.save(model.state_dict(), gpath + model_name)
