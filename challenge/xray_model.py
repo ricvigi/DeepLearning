@@ -37,7 +37,7 @@ def validate(model, val_loader) -> None:
                 correct += int((predicted == labels).sum())
 
         print("Accuracy {}: {:.2f}".format(name , correct / total))
-    return
+
 
 # training loop with l2 regularization
 def training_loop(n_epochs, optimizer, model, loss_fn,

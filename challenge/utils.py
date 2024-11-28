@@ -1,5 +1,6 @@
 import torch
 import math
+import datetime
 import numpy as np
 from PIL import Image
 
@@ -43,12 +44,36 @@ def show_tensor(t_img:torch.tensor) -> None:
     img = to_img(t_img)
     img.show()
 
-def training_loop(n_epochs, optimizer, model, loss_fn,
-                        train_loader) -> None:
+def validate(model, val_loader) -> str:
+    model.eval()
+    for name, loader in [(0, val_loader),
+                         (1, val_loader)]:
+        correct = 0
+        total = 0
+
+        with torch.no_grad():
+            for imgs, labels in loader:
+                outputs = model(imgs)
+
+                _, predicted = torch.max(outputs, dim=1)
+                print(predicted[:10], labels[:10])
+                total += labels.shape[0]
+                print((predicted == labels)[:10])
+                correct += int((predicted == labels).sum())
+
+        print("Accuracy {}: {:.2f}".format(name , correct / total))
+
+def training_loop(n_epochs,
+                  optimizer,
+                  model,
+                  loss_fn,
+                  train_loader,
+                  val_loader) -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     for epoch in range(1, n_epochs + 1):
         loss_train = 0.0
         for imgs, labels in train_loader:
+            model.train()
             imgs = imgs.to(device=device)
             labels = labels.to(device=device)
             outputs = model(imgs)
@@ -59,9 +84,10 @@ def training_loop(n_epochs, optimizer, model, loss_fn,
             optimizer.step()
 
             loss_train += loss.item()
+            validate(model, val_loader)
         if epoch == 1 or epoch % 1 == 0:
             print(f"{datetime.datetime.now()} Epoch {epoch}, Training loss {loss_train / len(train_loader)}")
-    return
+
 
 
 
