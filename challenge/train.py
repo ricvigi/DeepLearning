@@ -55,12 +55,16 @@ print("[*] Number of parameters:", sum(numel_list), numel_list)
 
 if os.path.exists(gpath + model_name):
     print(f"[*] Resuming training. Loading previous state dict")
-    model.load_state_dict(torch.load(gpath + model_name))
+    model.load_state_dict(torch.load(gpath + model_name, weights_only=True)) # weights_only must be set
+                                                                             # to True for security
+                                                                             # reasons
 
 
-optimizer = optim.SGD(model.parameters(), lr=.6e-1, weight_decay=1e-3) # NOTE: weight_decay acts like l2 regularization
+
+# optimizer = optim.SGD(model.parameters(), lr=.6e-1, weight_decay=1e-2) # NOTE: weight_decay acts like l2 regularization
+optimizer = optim.Adam(model.parameters(), lr = .5e-2, weight_decay=1e-2)
 loss_fn = nn.CrossEntropyLoss()
-n_epochs = 60
+n_epochs = 5
 
 # train the model
 print(f"[*] TRAINING for {n_epochs} epochs")

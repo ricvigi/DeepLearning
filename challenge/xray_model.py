@@ -228,7 +228,9 @@ model = MyModel()
 # load previously trained state dict if it exists
 if os.path.exists(model_path + model_name):
     print(f"[*] Resuming training. Loading previous state dict")
-    model.load_state_dict(torch.load(model_path + model_name))
+    model.load_state_dict(torch.load(model_path + model_name, weights_only=True)) # weights_only must be set
+                                                                                  # to True for security
+                                                                                  # reasons
 
 numel_list = [p.numel() for p in model.parameters()]
 print("[*] Number of parameters:", sum(numel_list), numel_list)
