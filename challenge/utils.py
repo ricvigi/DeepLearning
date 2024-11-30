@@ -64,10 +64,10 @@ def training_loop(n_epochs,
                   train_loader,
                   val_loader) -> None:
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    model.train()
     for epoch in range(1, n_epochs + 1):
         loss_train = 0.0
         for imgs, labels in train_loader:
-            model.train()
             imgs = imgs.to(device=device)
             labels = labels.to(device=device)
             outputs = model(imgs)
