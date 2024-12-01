@@ -18,6 +18,8 @@ model_name = "challenge.pt"
 train_path = path + "train"
 val_path = path + "val"
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# torch.set_num_threads(4)
+# torch.set_num_threads(8) # try with 8
 transformations = transforms.Compose([
     transforms.ToTensor()
     #transforms.Grayscale(),
@@ -44,9 +46,9 @@ val_indices = val_shuffled_indices[:int(n_samples*.7)]
 val_data = [val_datafolder[x] for x in val_indices]
 del val_datafolder
 
-train_loader = torch.utils.data.DataLoader(train_data, batch_size = 64, shuffle = True)
+train_loader = torch.utils.data.DataLoader(train_data, batch_size = 64, shuffle = True, num_workers=8)
 
-val_loader = torch.utils.data.DataLoader(val_data, batch_size = 64, shuffle = True)
+val_loader = torch.utils.data.DataLoader(val_data, batch_size = 64, shuffle = True, num_workers=8)
 
 model = MLP()
 
@@ -62,8 +64,8 @@ if os.path.exists(gpath + model_name):
 
 
 
-optimizer = optim.SGD(model.parameters(), lr=1e-3, weight_decay=1e-2) # NOTE: weight_decay acts like l2 regularization
-# optimizer = optim.Adam(model.parameters(), lr = .5e-2, weight_decay=1e-2)
+# optimizer = optim.SGD(model.parameters(), lr=.5e-3, weight_decay=1e-2) # NOTE: weight_decay acts like l2 regularization
+optimizer = optim.Adam(model.parameters(), lr = .5e-3, weight_decay=1e-2)
 loss_fn = nn.CrossEntropyLoss()
 n_epochs = 5
 
