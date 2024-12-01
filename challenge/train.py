@@ -34,13 +34,13 @@ val_imgs = {c:[] for c, x in enumerate(val_datafolder.classes)}
 
 n_samples = len(train_datafolder)
 train_shuffled_indices = torch.randperm(n_samples)
-train_indices = train_shuffled_indices[:int(n_samples*.3)]
+train_indices = train_shuffled_indices[:int(n_samples*.6)]
 train_data = [train_datafolder[x] for x in train_indices]
 del train_datafolder
 
 n_samples = len(val_datafolder)
 val_shuffled_indices = torch.randperm(n_samples)
-val_indices = val_shuffled_indices[:int(n_samples*.5)]
+val_indices = val_shuffled_indices[:int(n_samples*.7)]
 val_data = [val_datafolder[x] for x in val_indices]
 del val_datafolder
 
@@ -62,7 +62,7 @@ if os.path.exists(gpath + model_name):
 
 
 
-optimizer = optim.SGD(model.parameters(), lr=.6e-1, weight_decay=1e-2) # NOTE: weight_decay acts like l2 regularization
+optimizer = optim.SGD(model.parameters(), lr=1e-3, weight_decay=1e-2) # NOTE: weight_decay acts like l2 regularization
 # optimizer = optim.Adam(model.parameters(), lr = .5e-2, weight_decay=1e-2)
 loss_fn = nn.CrossEntropyLoss()
 n_epochs = 5
