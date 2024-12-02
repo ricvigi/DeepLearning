@@ -79,5 +79,6 @@ class MLP(nn.Module):
         out = torch.relu(self.fc4(out))
         out = torch.relu(self.fc5(out))
         out = torch.relu(self.fc6(out))
+        # out = nn.Softmax(out, dim=1)
         return out
 
