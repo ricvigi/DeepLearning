@@ -27,10 +27,10 @@ transformations = transforms.Compose([
 ])
 train_datafolder = torchvision.datasets.ImageFolder(root=train_path,
                                                     transform=transformations)
-# val_datafolder = torchvision.datasets.ImageFolder(root=val_path,
-#                                                   transform=transformations)
+val_datafolder = torchvision.datasets.ImageFolder(root=val_path,
+                                                  transform=transformations)
 
-# print(f"validation: {len(val_datafolder.samples)}")
+print(f"validation: {len(val_datafolder.samples)}")
 print(f"training: {len(train_datafolder.samples)}")
 
 train_imgs = {c:[] for c, x in enumerate(train_datafolder.classes)}
@@ -42,15 +42,15 @@ train_indices = train_shuffled_indices[:int(n_samples*1)]
 train_data = [train_datafolder[x] for x in train_indices]
 del train_datafolder
 
-# n_samples = len(val_datafolder)
-# val_shuffled_indices = torch.randperm(n_samples)
-# val_indices = val_shuffled_indices[:int(n_samples*1)]
-# val_data = [val_datafolder[x] for x in val_indices]
-# del val_datafolder
+n_samples = len(val_datafolder)
+val_shuffled_indices = torch.randperm(n_samples)
+val_indices = val_shuffled_indices[:int(n_samples*1)]
+val_data = [val_datafolder[x] for x in val_indices]
+del val_datafolder
 
 train_loader = torch.utils.data.DataLoader(train_data, batch_size = 64, shuffle = True, num_workers=8)
 
-# val_loader = torch.utils.data.DataLoader(val_data, batch_size = 64, shuffle = True, num_workers=8)
+val_loader = torch.utils.data.DataLoader(val_data, batch_size = 64, shuffle = True, num_workers=8)
 
 model = MLP()
 
@@ -71,7 +71,7 @@ optimizer = optim.Adam(model.parameters(), lr = .5e-3, weight_decay=1e-2)
 loss_fn = nn.CrossEntropyLoss()
 
 
-n_epochs = 7
+n_epochs = 5
 
 # train the model
 print(f"[*] TRAINING for {n_epochs} epochs")
