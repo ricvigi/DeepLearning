@@ -25,30 +25,32 @@ transformations = transforms.Compose([
     #transforms.Grayscale(),
     #transforms.GaussianBlur(5) # 5x5 kernel gaussian blur
 ])
-train_datafolder = torchvision.datasets.ImageFolder(root=train_path, transform=transformations)
-val_datafolder = torchvision.datasets.ImageFolder(root=val_path, transform=transformations)
+train_datafolder = torchvision.datasets.ImageFolder(root=train_path,
+                                                    transform=transformations)
+# val_datafolder = torchvision.datasets.ImageFolder(root=val_path,
+#                                                   transform=transformations)
 
-print(f"validation: {len(val_datafolder.samples)}")
+# print(f"validation: {len(val_datafolder.samples)}")
 print(f"training: {len(train_datafolder.samples)}")
 
 train_imgs = {c:[] for c, x in enumerate(train_datafolder.classes)}
-val_imgs = {c:[] for c, x in enumerate(val_datafolder.classes)}
+# val_imgs = {c:[] for c, x in enumerate(val_datafolder.classes)}
 
 n_samples = len(train_datafolder)
 train_shuffled_indices = torch.randperm(n_samples)
-train_indices = train_shuffled_indices[:int(n_samples*.6)]
+train_indices = train_shuffled_indices[:int(n_samples*1)]
 train_data = [train_datafolder[x] for x in train_indices]
 del train_datafolder
 
-n_samples = len(val_datafolder)
-val_shuffled_indices = torch.randperm(n_samples)
-val_indices = val_shuffled_indices[:int(n_samples*.7)]
-val_data = [val_datafolder[x] for x in val_indices]
-del val_datafolder
+# n_samples = len(val_datafolder)
+# val_shuffled_indices = torch.randperm(n_samples)
+# val_indices = val_shuffled_indices[:int(n_samples*1)]
+# val_data = [val_datafolder[x] for x in val_indices]
+# del val_datafolder
 
 train_loader = torch.utils.data.DataLoader(train_data, batch_size = 64, shuffle = True, num_workers=8)
 
-val_loader = torch.utils.data.DataLoader(val_data, batch_size = 64, shuffle = True, num_workers=8)
+# val_loader = torch.utils.data.DataLoader(val_data, batch_size = 64, shuffle = True, num_workers=8)
 
 model = MLP()
 
@@ -59,7 +61,7 @@ print("[*] Number of parameters:", sum(numel_list), numel_list)
 # reasons. Leaving the default value (False) could lead to
 # arbitrary execution of code
 if os.path.exists(gpath + model_name):
-    print(f"[*] Resuming training. Loading previous state dict")
+    print(f"[*] Loading model's state dict {model_name}")
     model.load_state_dict(torch.load(gpath + model_name, weights_only=True))
 
 
@@ -67,7 +69,9 @@ if os.path.exists(gpath + model_name):
 # optimizer = optim.SGD(model.parameters(), lr=.5e-3, weight_decay=1e-2) # NOTE: weight_decay acts like l2 regularization
 optimizer = optim.Adam(model.parameters(), lr = .5e-3, weight_decay=1e-2)
 loss_fn = nn.CrossEntropyLoss()
-n_epochs = 5
+
+
+n_epochs = 7
 
 # train the model
 print(f"[*] TRAINING for {n_epochs} epochs")
@@ -77,7 +81,7 @@ training_loop(
      model = model,
      loss_fn = loss_fn,
      train_loader = train_loader,
-     val_loader = val_loader
+     val_loader = None
     )
 
 # update the model's state dictionary

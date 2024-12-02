@@ -77,5 +77,7 @@ class MLP(nn.Module):
         out = torch.relu(self.fc2(out))
         out = torch.relu(self.fc3(out))
         out = torch.relu(self.fc4(out))
+        out = torch.relu(self.fc5(out))
+        out = torch.relu(self.fc6(out))
         return out
 

@@ -51,11 +51,13 @@ def validate(model, val_loader) -> str:
     with torch.no_grad():
         for imgs, labels in val_loader:
             outputs = model(imgs)
+
             _, predicted = torch.max(outputs, dim=1)
             total += labels.shape[0]
+            print(predicted[:10], labels[:10], (predicted == labels)[:10])
             correct += int((predicted == labels).sum())
 
-    print("Accuracy: {}".format(correct / total))
+    print(f"Accuracy: {correct / total}")
 
 def training_loop(n_epochs,
                   optimizer,
