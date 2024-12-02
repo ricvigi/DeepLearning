@@ -11,4 +11,4 @@ datasets/
 challenge/dl2425_challenge_dataset
 challenge/__pycache__
 py/Lab-28Nov/
-*challenge.pt
+*.pt
