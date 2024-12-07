@@ -62,6 +62,14 @@ def validate(model, val_loader) -> str:
 
 def testing_loop(model, test_loader) -> None:
     model.eval()
+    for imgs, names in test_loader:
+        imgs = imgs.to(device)
+        outputs = model(imgs)
+        _, predicted = torch.max(outputs, dim=1)
+        with open("classification.csv", "a", encoding="utf-8") as f:
+            for i in range(len(names)):
+                f.write(f"{names[i]},{predicted[i]}\n")
+
 
 
 def training_loop(n_epochs,
