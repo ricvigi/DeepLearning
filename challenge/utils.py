@@ -2,6 +2,7 @@ import torch
 import math
 import datetime
 import numpy as np
+from torchvision import transforms
 from PIL import Image
 
 def train_val_test_split(data):
@@ -48,6 +49,8 @@ def validate(model, val_loader) -> str:
     correct = 0
     with torch.no_grad():
         for imgs, labels in val_loader:
+            imgs = imgs.to(device)
+            labels = label.to(device)
             outputs = model(imgs)
 
             _, predicted = torch.max(outputs, dim=1)
@@ -56,6 +59,10 @@ def validate(model, val_loader) -> str:
             correct += int((predicted == labels).sum())
 
     print(f"Accuracy: {correct / total}")
+
+def testing_loop(model, test_loader) -> None:
+    model.eval()
+
 
 def training_loop(n_epochs,
                   optimizer,

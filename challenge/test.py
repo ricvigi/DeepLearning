@@ -37,3 +37,4 @@ if os.path.exists(gpath + model_name):
 numel_list = [p.numel() for p in model.parameters()]
 print("[*] Number of parameters:", sum(numel_list), numel_list)
 
+model.eval()
