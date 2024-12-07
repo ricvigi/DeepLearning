@@ -38,8 +38,6 @@ def show_img(path:str) -> None:
     path.show()
 
 def show_tensor(t_img:torch.tensor) -> None:
-    if len(t_img.shape > 3):
-        assert t_img.shape[0] <= 1, "You're trying to display a batch of size > 1. Be wary of opening more than one image at a time..."
     to_img = transforms.ToPILImage()
     img = to_img(t_img)
     img.show()

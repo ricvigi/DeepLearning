@@ -33,8 +33,8 @@ val_datafolder = torchvision.datasets.ImageFolder(root=val_path,
 print(f"validation: {len(val_datafolder.samples)}")
 print(f"training: {len(train_datafolder.samples)}")
 
-train_imgs = {c:[] for c, x in enumerate(train_datafolder.classes)}
-val_imgs = {c:[] for c, x in enumerate(val_datafolder.classes)}
+# train_imgs = {c:[] for c, x in enumerate(train_datafolder.classes)}
+# val_imgs = {c:[] for c, x in enumerate(val_datafolder.classes)}
 
 n_samples = len(train_datafolder)
 train_shuffled_indices = torch.randperm(n_samples)
