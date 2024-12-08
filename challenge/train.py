@@ -1,6 +1,7 @@
 import torch
 import torchvision
 import os
+import datetime
 import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
@@ -8,9 +9,10 @@ import torch.nn.init as init
 from torchvision import transforms
 from PIL import Image
 from MLP import MLP
+from MLP import MLPAlex
 from utils import training_loop
 from utils import validate
-import datetime
+
 
 gpath = "/home/rick/Ri/ThirdYear/DeepLearning/challenge/"
 path = '/home/rick/Ri/ThirdYear/DeepLearning/challenge/dl2425_challenge_dataset/'
